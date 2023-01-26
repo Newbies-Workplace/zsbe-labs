@@ -23,7 +23,8 @@
 
 1. Przechodzimy do katalogu zajęć ```cd labs/02-tic-tac-toe```
 2. ```npm i```
-3. ```node exercise.js```
+3. ```cd src```
+4. ```node exercise.js```
 
 ## Przykład "rysowania" tablicy
 
