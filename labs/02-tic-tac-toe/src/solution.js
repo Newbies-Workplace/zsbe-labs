@@ -6,81 +6,45 @@ const VALUE_COMPUTER = 'X'
 const VALUE_PLAYER = 'O'
 const SIZE = 3
 
-let currentPlayer = VALUE_PLAYER
-
-// const board = [
-//     ['O', ' ', ' '],
-//     [' ', 'O', ' '],
-//     [' ', ' ', 'O'],
-// ]
-
-// console.log(board)
-
-// board[0][0] = VALUE_PLAYER
-// board[0][1] = VALUE_PLAYER
-// board[1][1] = VALUE_X
-
-const board = Array.from(
-    {length: SIZE},
-    () => Array.from(
-        {length: SIZE},
-        () => VALUE_EMPTY
-    )
-)
-
-printBoard()
-
-while (true) {
-    if (currentPlayer === VALUE_PLAYER) {
-        playerMove()
-    } else {
-        computerMove()
-    }
-
-    printBoard()
-
-    if (isDraw()) {
-        console.log('remis')
-        break
-    }
-
-    if (isWinner(currentPlayer)) {
-        console.log('wygrał ' + currentPlayer)
-        break
-    }
-
-    if (currentPlayer === VALUE_PLAYER) {
-        currentPlayer = VALUE_COMPUTER
-    } else {
-        currentPlayer = VALUE_PLAYER
-    }
-
-    print('\n')
-}
+const board = [
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+]
 
 function printBoard() {
     for (let x = 0; x < SIZE; x++) {
         for (let y = 0; y < SIZE; y++) {
             print(board[x][y])
+
             if (y < SIZE - 1) {
-                print('|')
+                print("|")
             }
         }
+
         if (x < SIZE - 1) {
-            print('\n-+-+-\n')
+            print('\n-')
+
+            for (let i = 0; i < SIZE - 1; i++) {
+                print('+-')
+            }
         }
+
+        print('\n')
     }
+
     print('\n\n')
 }
 
 function playerMove() {
     while (true) {
         const userInput = input("Podaj pozycję w formacie x:y ")
+        const split = userInput.split(':').map((element) => parseInt(element))
 
-        const [userX, userY] = userInput.split(':').map((string) => parseInt(string))
+        const [userX, userY] = split
 
         if (isNaN(userX) || isNaN(userY)) {
-            console.log('Niepoprawna pozycja')
+            console.log("Niepoprawna pozycja")
 
             continue
         }
@@ -90,7 +54,7 @@ function playerMove() {
             x < 0 || y < 0 ||
             x > SIZE || y > SIZE
         ) {
-            console.log("Pozycja poza planszą")
+            console.log("Niepoprawna pozycja")
 
             continue
         }
@@ -102,32 +66,15 @@ function playerMove() {
         }
 
         board[x][y] = VALUE_PLAYER
-        break
+        return
     }
-}
-
-function computerMove() {
-    console.log("Ruch komputera")
-    const emptyFields = []
-
-    for (let x = 0; x < SIZE; x++) {
-        for (let y = 0; y < SIZE; y++) {
-            if (board[x][y] === VALUE_EMPTY) {
-                emptyFields.push({x, y})
-            }
-        }
-    }
-
-    const {x, y} = emptyFields[Math.floor(Math.random() * emptyFields.length)]
-
-    board[x][y] = VALUE_COMPUTER
 }
 
 function isDraw() {
     for (let x = 0; x < SIZE; x++) {
         for (let y = 0; y < SIZE; y++) {
             if (board[x][y] === VALUE_EMPTY) {
-               return false
+                return false
             }
         }
     }
@@ -138,60 +85,111 @@ function isDraw() {
 function isWinner(playerToCheck) {
     // row
     for (let x = 0; x < SIZE; x++) {
-        let correctCount = 0
+        let currentCount = 0
         for (let y = 0; y < SIZE; y++) {
             if (board[x][y] !== playerToCheck) {
                 break
             }
 
-            correctCount++;
+            currentCount++
         }
-        if (correctCount === SIZE) {
+
+        if (currentCount === SIZE) {
             return true
         }
     }
 
     // col
     for (let x = 0; x < SIZE; x++) {
-        let correctCount = 0
+        let currentCount = 0
         for (let y = 0; y < SIZE; y++) {
             if (board[y][x] !== playerToCheck) {
                 break
             }
 
-            correctCount++;
+            currentCount++
         }
-        if (correctCount === SIZE) {
+
+        if (currentCount === SIZE) {
             return true
         }
     }
 
-    //diagonal
-    let diagonalCount = 0
-    for (let x = 0; x < SIZE; x++) { // -1
-        if (board[x][(SIZE - 1) - x] !== playerToCheck) {
+
+    // diagonal 1
+    let firstDiagonalCount = 0
+    for (let i = 0; i < SIZE; i++) {
+        if (board[i][i] !== playerToCheck) {
             break
         }
 
-        diagonalCount++
+        firstDiagonalCount++
     }
-    if (diagonalCount === SIZE) {
+    if (firstDiagonalCount === SIZE) {
         return true
     }
 
-    //anti-diagonal
-    let antiDiagonalCount = 0
+    // diagonal 2
+    let secondDiagonalCount = 0
+    for (let i = 0; i < SIZE; i++) {
+        if (board[i][SIZE - i - 1] !== playerToCheck) {
+            break
+        }
+
+        secondDiagonalCount++
+    }
+    if (secondDiagonalCount === SIZE) {
+        return true
+    }
+}
+
+function computerMove() {
+    console.log("ruch komputera")
+    const emptyFields = []
+
     for (let x = 0; x < SIZE; x++) {
-        if (board[x][x] !== playerToCheck) {
-            break
+        for (let y = 0; y < SIZE; y++) {
+            if (board[x][y] === VALUE_EMPTY) {
+                emptyFields.push({x, y})
+            }
         }
-
-        antiDiagonalCount++
-    }
-    if (antiDiagonalCount === SIZE) {
-        return true
     }
 
-    //no matches
-    return false
+    const randomField = emptyFields[Math.floor(Math.random() * emptyFields.length)]
+
+    board[randomField.x][randomField.y] = VALUE_COMPUTER
+}
+
+
+let currentPlayer = VALUE_PLAYER
+
+printBoard()
+while (true) {
+    if (currentPlayer === VALUE_PLAYER) {
+        playerMove()
+    } else {
+        computerMove()
+    }
+
+    printBoard()
+
+    //sprawdzanie wygranej i remisu
+    if (isDraw()) {
+        console.log('Remis')
+        break
+    }
+
+    if (isWinner(currentPlayer)) {
+        console.log(currentPlayer + ' Wygrał')
+        break
+    }
+
+
+    if (currentPlayer === VALUE_PLAYER) {
+        currentPlayer = VALUE_COMPUTER
+    } else {
+        currentPlayer = VALUE_PLAYER
+    }
+
+    print('\n')
 }
