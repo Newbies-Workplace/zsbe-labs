@@ -1,0 +1,38 @@
+.video {
+    display: flex;
+    flex-direction: column;
+
+    width: 300px;
+
+    background-color: #242424;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 200px;
+
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.details {
+    display: flex;
+    margin-top: 16px;
+    gap: 8px;
+}
+.details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.video-title {
+    font-size: 22px;
+    text-align: start;
+}
+
+.video-author {
+    color: gray;
+}
