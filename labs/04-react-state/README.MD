@@ -12,7 +12,7 @@ npm run dev
 
 ## Tematy:
 
-- powtórka pisania komponentów
-- css modules
+- Powtórka z pisania komponentów
+- CSS modules
 - struktura plików w prijekcie
-- hook useState
+- hook useState & useEffect
