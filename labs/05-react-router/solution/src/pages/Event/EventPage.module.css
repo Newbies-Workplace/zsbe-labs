@@ -1,0 +1,30 @@
+.content {
+    background-color: #939393;
+
+    min-height: 400px;
+}
+
+.toolbar {
+    background-color: #656565;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 40px;
+}
+.eventNav {
+    display: flex;
+    gap: 16px;
+}
+
+.active {
+    background-color: #3C91E6;
+
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.inactive {
+    background-color: #656565;
+
+    padding: 8px;
+    border-radius: 5px;
+}
